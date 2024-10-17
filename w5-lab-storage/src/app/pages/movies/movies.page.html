@@ -29,6 +29,7 @@
             <h2>{{ movie.name }}</h2>
             <p>{{ movie.year }}</p>
           </ion-label>
+          <ion-checkbox slot="start" [(ngModel)]="movie.isWatched"></ion-checkbox>
         </ion-item>
         <ion-button (click)="openEditModal(i)">Edit</ion-button>
         <ion-button color="danger" (click)="deleteMovie(i)">Delete {{movie.name}}</ion-button>
@@ -40,5 +41,18 @@
   <ion-text color="danger" *ngIf="errorMessage">
     <p>{{ errorMessage }}</p>
   </ion-text>
+
+  <!-- Segment for Filter Options -->
+  <ion-segment [(ngModel)]="selectedFilter" (ionChange)="filterMovies()">
+    <ion-segment-button value="all">
+      All
+    </ion-segment-button>
+    <ion-segment-button value="watched">
+      Watched
+    </ion-segment-button>
+    <ion-segment-button value="unwatched">
+      Unwatched
+    </ion-segment-button>
+  </ion-segment>
 </ion-content>
 

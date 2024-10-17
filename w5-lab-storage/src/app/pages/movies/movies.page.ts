@@ -16,13 +16,17 @@ import { CommonModule } from '@angular/common';
 export class MoviesPage implements OnInit {
   movieName: string = '';
   releaseYear: string = '';
-  movies: { name: string; year: string }[] = [];
+  movies: { name: string; year: string; isWatched?: boolean }[] = [];
+  filteredMovies: { name: string; year: string; isWatched?: boolean }[] = [];
   errorMessage: string = '';
+  isAddingMovie: boolean = false; // State for adding a movie
+  selectedFilter: string = 'all'; // Current filter
 
   constructor(private storageService: StorageService, private modalController: ModalController) {}
 
   async ngOnInit() {
     await this.loadMovies();
+    this.filteredMovies = this.movies; // Initialize filteredMovies
   }
 
   async addMovie() {
@@ -41,8 +45,10 @@ export class MoviesPage implements OnInit {
         return;
       }
 
-      const movie = { name: this.movieName, year: this.releaseYear };
+      const movie = { name: this.movieName, year: this.releaseYear, isWatched: false };
       this.movies.push(movie);
+      this.filterMovies(); // Update filtered movies after adding a new movie
+
       try {
         // Save updated movie list to storage
         await this.storageService.set('movies', this.movies);
@@ -116,4 +122,19 @@ export class MoviesPage implements OnInit {
       this.errorMessage = 'Error updating movie list. Please try again.';
     }
   }
+
+  updateWatchedStatus(movie: { isWatched?: boolean }) {
+    // You can log or perform any action here when the watched status changes.
+    console.log('Updated watched status for movie:', movie);
+  }
+
+  filterMovies() {
+    if (this.selectedFilter === 'watched') {
+        this.filteredMovies = this.movies.filter(movie => movie.isWatched);
+    } else if (this.selectedFilter === 'unwatched') {
+        this.filteredMovies = this.movies.filter(movie => !movie.isWatched);
+    } else {
+        this.filteredMovies = [...this.movies]; // Show all movies
+    }
+}
 }

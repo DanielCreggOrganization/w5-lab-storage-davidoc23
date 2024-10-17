@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StorageService } from '../../services/storage.service';
+import { ModalController } from '@ionic/angular';
+import { EditMovieModalComponent } from '../../edit-movie-modal/edit-movie-modal.component'; // Adjust the path as necessary
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -17,7 +19,7 @@ export class MoviesPage implements OnInit {
   movies: { name: string; year: string }[] = [];
   errorMessage: string = '';
 
-  constructor(private storageService: StorageService) {}
+  constructor(private storageService: StorageService, private modalController: ModalController) {}
 
   async ngOnInit() {
     await this.loadMovies();
@@ -81,6 +83,37 @@ export class MoviesPage implements OnInit {
     } catch (error) {
       console.error('Error deleting movie:', error);
       this.errorMessage = 'Error deleting movie. Please try again.';
+    }
+  }
+
+  // Open modal for editing a movie
+  async openEditModal(index: number) {
+    const modal = await this.modalController.create({
+      component: EditMovieModalComponent,
+      componentProps: {
+        movieName: this.movies[index].name,
+        releaseYear: this.movies[index].year,
+      },
+    });
+
+    modal.onDidDismiss().then((result) => {
+      if (result.data) {
+        const updatedMovie = result.data;
+        this.movies[index] = updatedMovie; // Update the movie in the list
+        this.updateStorage(); // Update storage with new movie list
+      }
+    });
+
+    return await modal.present();
+  }
+
+  // Update the storage after editing a movie
+  async updateStorage() {
+    try {
+      await this.storageService.set('movies', this.movies);
+    } catch (error) {
+      console.error('Error updating storage:', error);
+      this.errorMessage = 'Error updating movie list. Please try again.';
     }
   }
 }

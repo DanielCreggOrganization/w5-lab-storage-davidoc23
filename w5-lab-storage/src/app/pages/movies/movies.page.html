@@ -30,6 +30,7 @@
             <p>{{ movie.year }}</p>
           </ion-label>
         </ion-item>
+        <ion-button (click)="openEditModal(i)">Edit</ion-button>
         <ion-button color="danger" (click)="deleteMovie(i)">Delete {{movie.name}}</ion-button>
       </ion-item-sliding>
     }
@@ -40,3 +41,4 @@
     <p>{{ errorMessage }}</p>
   </ion-text>
 </ion-content>
+

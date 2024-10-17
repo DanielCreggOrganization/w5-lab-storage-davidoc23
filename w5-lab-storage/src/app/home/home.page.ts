@@ -21,7 +21,8 @@ export class HomePage {
   async setItem() {
     if (!this.key || !this.value) {
       this.output = 'Error: Key and value must be provided';
-      throw new Error('Key and value must be provided');
+      alert('Error: Key and value must be provided');
+      return;
     }
     try {
       await this.storageService.set(this.key, this.value);
@@ -37,6 +38,7 @@ export class HomePage {
       const value = await this.storageService.get(this.key);
       if (value === null || value === undefined) {
         this.output = `Error: No item found for key ${this.key}`;
+        alert(`Error: No item found for key ${this.key}`);
         throw new Error(`No item found for key ${this.key}`);
       }
       this.output = `Get ${this.key}: ${value}`;
@@ -51,6 +53,7 @@ export class HomePage {
       const value = await this.storageService.get(this.key);
       if (value === null || value === undefined) {
         this.output = `Error: No item found for key ${this.key}`;
+        alert(`Error: No item found for key ${this.key}`);
         throw new Error(`No item found for key ${this.key}`);
       }
       await this.storageService.remove(this.key);
@@ -66,6 +69,7 @@ export class HomePage {
       const length = await this.storageService.length();
       if (length === 0) {
         this.output = 'Error: Storage is already empty';
+        alert('Error: Storage is already empty');
         throw new Error('Storage is already empty');
       }
       await this.storageService.clear();
@@ -80,8 +84,9 @@ export class HomePage {
     try {
       const keys = await this.storageService.keys();
       if (keys.length === 0) {
-        this.output = 'Error: No keys found in storage';
-        throw new Error('No keys found in storage');
+      this.output = 'Error: No keys found in storage';
+      alert('Error: No keys found in storage');
+      throw new Error('No keys found in storage');
       }
       this.output = `Keys: ${keys.join(', ')}`;
     } catch (error) {
@@ -94,8 +99,9 @@ export class HomePage {
     try {
       const length = await this.storageService.length();
       if (length === 0) {
-        this.output = 'Error: Storage is empty';
-        throw new Error('Storage is empty');
+      this.output = 'Error: Storage is empty';
+      alert('Error: Storage is empty');
+      throw new Error('Storage is empty');
       }
       this.output = `Storage length: ${length}`;
     } catch (error) {
@@ -106,6 +112,12 @@ export class HomePage {
 
   async iterateStorage() {
     try {
+      const length = await this.storageService.length();
+      if (length === 0) {
+        this.output = 'Error: Storage is empty';
+        alert('Error: Storage is empty');
+        throw new Error('Storage is empty');
+      }
       let output = 'Storage items:\n';
       await this.storageService.forEach((value, key, index) => {
         output += `${index}: ${key} => ${value}\n`;

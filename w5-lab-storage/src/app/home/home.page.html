@@ -13,7 +13,21 @@
     <ion-label position="floating">Value</ion-label>
     <ion-input [(ngModel)]="value"></ion-input>
   </ion-item>
+
   <ion-button expand="full" (click)="setItem()">Set Item</ion-button>
   <ion-button expand="full" (click)="getItem()">Get Item</ion-button>
-  <p>{{ output }}</p>
+  <ion-button expand="full" (click)="removeItem()">Remove Item</ion-button>
+  <ion-button expand="full" (click)="clearStorage()">Clear Storage</ion-button>
+  <ion-button expand="full" (click)="getKeys()">Get Keys</ion-button>
+  <ion-button expand="full" (click)="getLength()">Get Storage Length</ion-button>
+  <ion-button expand="full" (click)="iterateStorage()">Iterate Storage</ion-button>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Output</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <pre>{{ output }}</pre>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

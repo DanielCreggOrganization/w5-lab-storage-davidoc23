@@ -20,28 +20,6 @@
   <!-- Add Movie Button -->
   <ion-button expand="full" (click)="addMovie()">Add Movie</ion-button>
 
-  <!-- Movies List -->
-  <ion-list>
-    @for (movie of movies; track movie; let i = $index) {
-      <ion-item-sliding>
-        <ion-item>
-          <ion-label>
-            <h2>{{ movie.name }}</h2>
-            <p>{{ movie.year }}</p>
-          </ion-label>
-          <ion-checkbox slot="start" [(ngModel)]="movie.isWatched"></ion-checkbox>
-        </ion-item>
-        <ion-button (click)="openEditModal(i)">Edit</ion-button>
-        <ion-button color="danger" (click)="deleteMovie(i)">Delete {{movie.name}}</ion-button>
-      </ion-item-sliding>
-    }
-  </ion-list>
-
-  <!-- Error Message Display -->
-  <ion-text color="danger" *ngIf="errorMessage">
-    <p>{{ errorMessage }}</p>
-  </ion-text>
-
   <!-- Segment for Filter Options -->
   <ion-segment [(ngModel)]="selectedFilter" (ionChange)="filterMovies()">
     <ion-segment-button value="all">
@@ -54,5 +32,26 @@
       Unwatched
     </ion-segment-button>
   </ion-segment>
-</ion-content>
 
+  <!-- Movies List -->
+  <ion-list>
+    <ng-container *ngFor="let movie of filteredMovies; let i = index">
+      <ion-item-sliding>
+        <ion-item>
+          <ion-label>
+            <h2>{{ movie.name }}</h2>
+            <p>{{ movie.year }}</p>
+          </ion-label>
+          <ion-checkbox slot="start" [(ngModel)]="movie.isWatched" (ionChange)="filterMovies()"></ion-checkbox>
+        </ion-item>
+        <ion-button (click)="openEditModal(i)">Edit</ion-button>
+        <ion-button color="danger" (click)="deleteMovie(i)">Delete {{ movie.name }}</ion-button>
+      </ion-item-sliding>
+    </ng-container>
+  </ion-list>
+
+  <!-- Error Message Display -->
+  <ion-text color="danger" *ngIf="errorMessage">
+    <p>{{ errorMessage }}</p>
+  </ion-text>
+</ion-content>

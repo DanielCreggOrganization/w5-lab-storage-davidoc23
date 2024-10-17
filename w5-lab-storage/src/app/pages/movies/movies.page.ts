@@ -86,6 +86,7 @@ export class MoviesPage implements OnInit {
     try {
       await this.storageService.set('movies', this.movies);
       this.errorMessage = '';
+      this.filterMovies(); // Update filtered movies after deletion
     } catch (error) {
       console.error('Error deleting movie:', error);
       this.errorMessage = 'Error deleting movie. Please try again.';
@@ -137,5 +138,5 @@ export class MoviesPage implements OnInit {
         this.filteredMovies = [...this.movies]; // Show all movies
     }
   }
-   
+
 }

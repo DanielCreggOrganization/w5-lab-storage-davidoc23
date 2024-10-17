@@ -17,10 +17,11 @@ export class EditMovieModalComponent {
 
   constructor(private modalController: ModalController) {}
 
-  save() {
-    console.log('Saving movie:', this.movieName, this.releaseYear);
-    this.movieUpdated.emit({ name: this.movieName, year: this.releaseYear });
-    this.dismiss();
+  saveChanges() {
+    this.modalController.dismiss({
+      name: this.movieName,
+      year: this.releaseYear,
+    });
   }
 
   dismiss() {

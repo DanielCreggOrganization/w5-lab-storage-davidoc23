@@ -136,5 +136,6 @@ export class MoviesPage implements OnInit {
     } else {
         this.filteredMovies = [...this.movies]; // Show all movies
     }
-}
+  }
+   
 }

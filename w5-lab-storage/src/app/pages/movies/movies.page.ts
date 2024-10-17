@@ -137,6 +137,13 @@ export class MoviesPage implements OnInit {
     } else {
         this.filteredMovies = [...this.movies]; // Show all movies
     }
+
+    // Check if there are no movies in the filtered list and set an error message
+    if (this.filteredMovies.length === 0) {
+        this.errorMessage = 'No movies found in this section.';
+    } else {
+        this.errorMessage = ''; // Clear the error message if there are movies
+    }
   }
 
 }

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Storage } from '@ionic/storage-angular';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { StorageService } from '../services/storage.service';
@@ -27,6 +26,9 @@ export class HomePage {
     try {
       await this.storageService.set(this.key, this.value);
       this.output = `Set ${this.key}: ${this.value}`;
+      // Clear the input fields after setting the item
+      this.key = '';
+      this.value = '';
     } catch (error) {
       console.error('Error setting item', error);
       this.output = `Error setting item: ${error}`;
@@ -47,7 +49,7 @@ export class HomePage {
       this.output = `Error getting item: ${error}`;
     }
   }
-  
+
   async removeItem() {
     try {
       const value = await this.storageService.get(this.key);
@@ -58,6 +60,7 @@ export class HomePage {
       }
       await this.storageService.remove(this.key);
       this.output = `Removed ${this.key}`;
+      this.key = ''; // Optionally clear the key after removal
     } catch (error) {
       console.error('Error removing item', error);
       this.output = `Error removing item: ${error}`;
@@ -84,9 +87,9 @@ export class HomePage {
     try {
       const keys = await this.storageService.keys();
       if (keys.length === 0) {
-      this.output = 'Error: No keys found in storage';
-      alert('Error: No keys found in storage');
-      throw new Error('No keys found in storage');
+        this.output = 'Error: No keys found in storage';
+        alert('Error: No keys found in storage');
+        throw new Error('No keys found in storage');
       }
       this.output = `Keys: ${keys.join(', ')}`;
     } catch (error) {
@@ -99,9 +102,9 @@ export class HomePage {
     try {
       const length = await this.storageService.length();
       if (length === 0) {
-      this.output = 'Error: Storage is empty';
-      alert('Error: Storage is empty');
-      throw new Error('Storage is empty');
+        this.output = 'Error: Storage is empty';
+        alert('Error: Storage is empty');
+        throw new Error('Storage is empty');
       }
       this.output = `Storage length: ${length}`;
     } catch (error) {
